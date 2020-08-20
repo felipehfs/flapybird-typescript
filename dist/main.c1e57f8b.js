@@ -224,21 +224,21 @@ exports.PipeGroup = void 0;
 var PipeGroup =
 /** @class */
 function () {
-  function PipeGroup(x, y, canvasWidth) {
+  function PipeGroup(x, canvasWidth, canvasHeight) {
     this.x = x;
-    this.y = y;
     this.canvasWidth = canvasWidth;
+    this.canvasHeight = canvasHeight;
     var downstairsHeight = Math.floor(Math.random() * 120) + 50;
     var upstairsHeight = Math.floor(Math.random() * 150) + 50;
     this.upstairs = {
-      x: canvasWidth,
+      x: x,
       y: 0,
       width: PipeGroup.MAX_WIDTH,
       height: upstairsHeight
     };
     this.downstairs = {
-      x: canvasWidth,
-      y: y - downstairsHeight,
+      x: x,
+      y: canvasHeight - downstairsHeight,
       width: PipeGroup.MAX_WIDTH,
       height: downstairsHeight
     };
@@ -252,14 +252,14 @@ function () {
     var downstairsHeight = Math.floor(Math.random() * 120) + 50;
     var upstairsHeight = Math.floor(Math.random() * 150) + 50;
     this.upstairs = {
-      x: x,
+      x: this.x + this.canvasWidth / 2,
       y: 0,
       width: PipeGroup.MAX_WIDTH,
       height: upstairsHeight
     };
     this.downstairs = {
-      x: x,
-      y: y - downstairsHeight,
+      x: this.x + this.canvasWidth / 2,
+      y: this.canvasHeight - downstairsHeight,
       width: PipeGroup.MAX_WIDTH,
       height: downstairsHeight
     };
@@ -284,8 +284,9 @@ function () {
 
     if (this.downstairs.x < -PipeGroup.MAX_WIDTH) {
       this.downstairs.x = this.canvasWidth;
-      var downstairsHeight = Math.floor(Math.random() * 200) + 150;
+      var downstairsHeight = Math.floor(Math.random() * 120) + 50;
       this.downstairs.height = downstairsHeight;
+      this.downstairs.y = this.canvasHeight - downstairsHeight;
     }
 
     this.upstairs.x -= 5;
@@ -320,10 +321,11 @@ function () {
     this.width = width;
     this.height = height;
     this.actualState = gameState_1.GameState.MENU;
-    this.pipes = [];
     this.bird = new bird_1.Bird(10, 0);
-    this.pipes.push(new pipeGroup_1.PipeGroup(width - pipeGroup_1.PipeGroup.MAX_WIDTH, height, width));
+    this.pipes = [new pipeGroup_1.PipeGroup(width - pipeGroup_1.PipeGroup.MAX_WIDTH, width, height), new pipeGroup_1.PipeGroup(width - pipeGroup_1.PipeGroup.MAX_WIDTH - 180, width, height)];
   }
+
+  ;
 
   Game.prototype.keyUp = function (key) {
     switch (key) {
@@ -488,7 +490,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "46635" + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "46307" + '/');
 
   ws.onmessage = function (event) {
     checkedAssets = {};

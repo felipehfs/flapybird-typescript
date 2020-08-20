@@ -9,21 +9,21 @@ export class PipeGroup implements Entity {
     public static readonly MAX_WIDTH : number = 20;
     constructor(
         private x: number,
-        private y: number,
-        private canvasWidth: number
+        private canvasWidth: number,
+        private canvasHeight: number
     ){
         const downstairsHeight = Math.floor(Math.random() * 120) + 50; 
         const upstairsHeight = Math.floor(Math.random() * 150) + 50; 
         this.upstairs = { 
-            x: canvasWidth, 
+            x: x, 
             y: 0, 
             width: PipeGroup.MAX_WIDTH, 
             height: upstairsHeight
         }
 
         this.downstairs = { 
-            x: canvasWidth,
-            y: y - downstairsHeight,
+            x: x,
+            y: canvasHeight - downstairsHeight,
             width: PipeGroup.MAX_WIDTH,
             height: downstairsHeight
         }  
@@ -31,20 +31,20 @@ export class PipeGroup implements Entity {
     }
 
     public reset(): void {
-        const { x, y } = this;
+        const { x } = this;
         const downstairsHeight = Math.floor(Math.random() * 120) + 50; 
         const upstairsHeight = Math.floor(Math.random() * 150) + 50; 
 
         this.upstairs = { 
-            x, 
+            x: this.x + this.canvasWidth /2,
             y: 0, 
             width: PipeGroup.MAX_WIDTH, 
             height: upstairsHeight
         }
 
         this.downstairs = { 
-            x,
-            y: y - downstairsHeight,
+            x: this.x + this.canvasWidth / 2,
+            y: this.canvasHeight - downstairsHeight,
             width: PipeGroup.MAX_WIDTH,
             height: downstairsHeight
         }  
@@ -69,8 +69,9 @@ export class PipeGroup implements Entity {
 
         if (this.downstairs.x < -PipeGroup.MAX_WIDTH) {
             this.downstairs.x = this.canvasWidth;
-            const downstairsHeight = Math.floor(Math.random() * 200) + 150; 
+            const downstairsHeight = Math.floor(Math.random() * 120) + 50; 
             this.downstairs.height = downstairsHeight;
+            this.downstairs.y =  this.canvasHeight - downstairsHeight
         }
 
         this.upstairs.x -= 5;

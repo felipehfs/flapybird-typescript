@@ -9,8 +9,7 @@ export class Game implements Entity, KeyboardListener {
 
     public actualState: GameState = GameState.MENU;
     public bird: Bird;
-    public pipes: PipeGroup[] = [];
-
+    public pipes: PipeGroup[];;
 
     constructor(
         private width: number,
@@ -18,7 +17,10 @@ export class Game implements Entity, KeyboardListener {
     ){
         this.bird = new Bird(10, 0); 
 
-        this.pipes.push(new PipeGroup(width - PipeGroup.MAX_WIDTH, height, width));
+        this.pipes = [
+            new PipeGroup(width - PipeGroup.MAX_WIDTH, width, height),
+            new PipeGroup(width - PipeGroup.MAX_WIDTH - 180, width, height),
+        ]; 
     }
     
     keyUp(key: string): void {
@@ -57,7 +59,7 @@ export class Game implements Entity, KeyboardListener {
             paint.fillRect(0, 0, this.width, this.height);
             paint.closePath();
             paint.fill();
-            
+
             for (let pipe of this.pipes) {
                 pipe.draw(paint);
             }
@@ -90,7 +92,7 @@ export class Game implements Entity, KeyboardListener {
     update(): void {
         if (this.actualState === GameState.GAME) {
             this.bird.update();
-
+            
             for (let pipe of this.pipes) {
                 pipe.update();
 
